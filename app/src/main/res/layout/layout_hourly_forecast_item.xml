@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/_80sdp"
-    android:layout_height="@dimen/_120sdp"
-    android:background="@drawable/hourly_item_background"
-    android:gravity="center_horizontal"
-    android:layout_margin="@dimen/_5sdp"
-    android:padding="@dimen/_10sdp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_2sdp"
+    android:padding="@dimen/_2sdp">
 
     <TextView
-        android:id="@+id/tv_time"
+        android:id="@+id/hour_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/_10ssp"
-        android:textColor="@color/dark_blue"
-        tools:text="9:00AM" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13ssp"
+        tools:text="1 PM" />
 
-    <ImageView
-        android:id="@+id/iv_icon"
+    <LinearLayout
         android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/tv_temperature"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_time"
-        app:srcCompat="@drawable/image_sample" />
+        android:layout_height="@dimen/_90sdp"
+        android:layout_below="@id/hour_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/hourly_item_background"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="23"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_15ssp"/>
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/image_sample" />
 
+        <TextView
+            android:id="@+id/hour_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            tools:text="-3°" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -1,111 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/temp_hot_background"
+    android:id="@+id/root_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/_14sdp"
-    tools:context=".presentation.HomeFragment">
+    tools:context=".feature_weather.presentation.HomeFragment">
 
-    <TextView
-        android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_11ssp"
-        android:drawablePadding="@dimen/_5sdp"
-        app:drawableStartCompat="@drawable/ic_location"
-        app:drawableTint="@color/dark_blue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Location" />
-
-    <ImageView
-        android:id="@+id/weather_icon"
-        android:layout_width="@dimen/_130sdp"
-        android:layout_height="@dimen/_130sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_location" />
-
-    <TextView
-        android:id="@+id/tv_weather_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="@+id/weather_icon"
-        app:layout_constraintStart_toStartOf="@+id/weather_icon"
-        app:layout_constraintTop_toBottomOf="@+id/weather_icon"
-        tools:text="Weather Description" />
-
-    <TextView
-        android:id="@+id/tv_weather_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_50ssp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_weather_desc"
-        app:layout_constraintStart_toStartOf="@+id/tv_weather_desc"
-        app:layout_constraintTop_toBottomOf="@id/tv_weather_desc"
-        tools:text="23" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/montserrat_semi_bold"
-        android:text="o"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_13ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_weather_temp"
-        app:layout_constraintStart_toEndOf="@id/tv_weather_temp"
-        app:layout_constraintTop_toTopOf="@id/tv_weather_temp"
-        app:layout_constraintVertical_bias="0.06999999" />
-
-
-    <TextView
-        android:id="@+id/tv_wind_speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_12ssp"
-        app:drawableStartCompat="@drawable/ic_wind"
-        app:drawableTint="@color/dark_blue"
-        app:layout_constraintStart_toStartOf="@+id/weather_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weather_temp"
-        tools:text="10km/h" />
-
-    <TextView
-        android:id="@+id/tv_weather_humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:drawablePadding="@dimen/_5sdp"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_12ssp"
-        app:drawableStartCompat="@drawable/ic_humidity"
-        app:drawableTint="@color/dark_blue"
-        app:layout_constraintEnd_toEndOf="@+id/weather_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weather_temp"
-        tools:text="32%" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/hourlyRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_130sdp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_weather_temp"
-        app:layout_constraintVertical_bias="0.69" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_22ssp"
+                    tools:text="Today" />
+
+                <TextView
+                    android:id="@+id/current_forecast_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8ssp"
+                    tools:text="Wed, 3 Dec" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_45sdp">
+
+                    <TextView
+                        android:id="@+id/current_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_70ssp"
+                        tools:text="-12" />
+
+                    <TextView
+                        android:id="@+id/degree_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/current_temperature"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:layout_toEndOf="@id/current_temperature"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp"
+                        tools:text="°C" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/feels_like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="italic"
+                        tools:text="Feels like " />
+
+                    <TextView
+                        android:id="@+id/feels_like_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_toEndOf="@id/feels_like"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"
+                        tools:text="-3°" />
+                </RelativeLayout>
+
+                <RadioGroup
+                    android:id="@+id/day_selector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginHorizontal="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/today_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:checked="true"
+                        android:tag="@string/today"
+                        android:text="@string/today"
+                        android:textColor="@drawable/day_selector" />
+
+                    <RadioButton
+                        android:id="@+id/tomorrow_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:button="@null"
+                        android:tag="@string/tomorrow"
+                        android:text="@string/tomorrow"
+                        android:textColor="@drawable/day_selector" />
+                </RadioGroup>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dividerColor="@color/white_60"
+                    android:layout_marginHorizontal="@dimen/_12sdp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hourly_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/layout_hourly_forecast_item" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/current_stats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_round_bg"
+                    android:layout_marginVertical="@dimen/_14sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:padding="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:listitem="@layout/layout_stats_item"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
