@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: WeatherViewModel by viewModels()
     private var snackBar: Snackbar? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,23 +38,32 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // store in the view model
-        val option = view.findViewById(binding.daySelector.checkedRadioButtonId) as RadioButton
-        option.textSize = 24f
+        toggleListener(view)
+        setupUI()
+    }
+
+    private fun toggleListener(view: View) {
+        val selectedRadioButton = view.findViewById(binding.daySelector.checkedRadioButtonId)
+                as RadioButton
+        selectedRadioButton.textSize = 24f
+
         binding.daySelector.setOnCheckedChangeListener { group, checkedId ->
             val checkedOption = group?.findViewById<RadioButton>(checkedId)
             when (checkedId) {
                 R.id.today_weather -> {
-                    group.findViewWithTag<RadioButton>("Tomorrow").textSize = 15f
+                    group.findViewWithTag<RadioButton>("Tomorrow").textSize = 16f
                     checkedOption?.textSize = 24f
+//                    getForecast(0)
+                    Toast.makeText(requireContext(), "Today", Toast.LENGTH_SHORT).show()
                 }
                 R.id.tomorrow_weather -> {
-                    group.findViewWithTag<RadioButton>("Today").textSize = 15f
+                    group.findViewWithTag<RadioButton>("Today").textSize = 16f
                     checkedOption?.textSize = 24f
+//                    getForecast(1)
+                    Toast.makeText(requireContext(), "Tomorrow", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        setupUI()
-        fetchWeather()
     }
 
     private fun setupUI() {
@@ -73,15 +83,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun createHourlyAdapter(): HourlyStatsAdapter {
-        return HourlyStatsAdapter(requireContext())
+    private fun createHourlyAdapter(): HourlyWeatherAdapter {
+        return HourlyWeatherAdapter(requireContext())
     }
 
     private fun createStatsAdapter(): CurrentStatsAdapter {
         return CurrentStatsAdapter(requireContext())
     }
 
-    private fun setupHourlyRecyclerView(statsAdapter: HourlyStatsAdapter) {
+    private fun setupHourlyRecyclerView(statsAdapter: HourlyWeatherAdapter) {
+        val snapHelper = LinearSnapHelper()
         binding.hourlyRecyclerView.apply {
             adapter = statsAdapter
             layoutManager = LinearLayoutManager(
@@ -89,6 +100,7 @@ class HomeFragment : Fragment() {
             )
             hasFixedSize()
         }
+        snapHelper.attachToRecyclerView(binding.hourlyRecyclerView)
     }
 
     private fun setupCurrentStatsAdapter(statsAdapter: CurrentStatsAdapter) {
@@ -99,11 +111,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun subscribeToUpdates(adapter: HourlyStatsAdapter, statsAdapter: CurrentStatsAdapter) {
+    private fun subscribeToUpdates(
+        hourlyAdapter: HourlyWeatherAdapter,
+        statsAdapter: CurrentStatsAdapter
+    ) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect {
-                    updateUi(it, adapter, statsAdapter)
+                    updateUi(it, hourlyAdapter, statsAdapter)
                 }
             }
         }
@@ -111,30 +126,24 @@ class HomeFragment : Fragment() {
 
     private fun updateUi(
         state: WeatherState,
-        adapter: HourlyStatsAdapter,
+        hourlyAdapter: HourlyWeatherAdapter,
         statsAdapter: CurrentStatsAdapter
     ) {
         val currentWeather = state.weatherForecast?.currentWeather?.toUIModel()
+        val todayForecast = state.weatherForecast?.forecast?.get(0)?.toUIModel()
+        val tomorrowForecast = state.weatherForecast?.forecast?.get(1)?.toUIModel()
         binding.day.text = currentWeather?.day
         binding.currentForecastDate.text = currentWeather?.date
         binding.currentTemperature.text = currentWeather?.temperature
         binding.feelsLikeTemperature.text = currentWeather?.feelsLikeTemp
         binding.degreeType.text = currentWeather?.degreeType
-        val todayHourlyStats = state.weatherForecast?.forecast?.get(0)?.hourlyForecast
-            .orEmpty().map { hourlyForecast -> hourlyForecast.toUIModel() }
-        // Dirty Spaghetti code, lol
-        val astro = state.weatherForecast?.forecast?.get(0)?.astrology
-        val currentStats = UICurrentStats(
-            sunrise = astro?.sunrise.orEmpty(),
-            sunset = astro?.sunset.orEmpty(),
-            precipitation = currentWeather?.precipitation.orEmpty(),
-            humidity = currentWeather?.humidity.orEmpty(),
-            windSpeed = currentWeather?.wind.orEmpty(),
-            pressure = currentWeather?.pressure.orEmpty()
-        ).toStatsList()
-        adapter.submitList(todayHourlyStats)
-        statsAdapter.submitList(currentStats)
+        hourlyAdapter.submitList(
+            if (binding.daySelector.checkedRadioButtonId == R.id.today_weather)
+                todayForecast?.hourlyForecast else tomorrowForecast?.hourlyForecast
+        )
+        statsAdapter.submitList(todayForecast?.toStatsList())
         binding.progressBar.isVisible = state.isLoading
+        binding.currentStats.isVisible = ! state.isLoading
         handleFailure(state.error)
     }
 

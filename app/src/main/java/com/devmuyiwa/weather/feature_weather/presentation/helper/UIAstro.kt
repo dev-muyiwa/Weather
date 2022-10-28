@@ -1,6 +1,7 @@
 package com.devmuyiwa.weather.feature_weather.presentation.helper
 
-data class Stats(
-	val name: String,
-	val value: String
+
+data class UIAstro(
+	val sunrise: String,
+	val sunset: String
 )

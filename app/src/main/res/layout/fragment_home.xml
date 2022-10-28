@@ -8,19 +8,41 @@
     android:layout_height="match_parent"
     tools:context=".feature_weather.presentation.HomeFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_round_toc_24"
+            app:navigationIconTint="?attr/colorControlNormal"
+            android:background="@android:color/transparent"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:title="Lagos, Nigeria"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/Theme.Weather.ToolbarTitle"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -45,7 +67,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_45sdp">
+                    android:layout_marginTop="@dimen/_40sdp">
 
                     <TextView
                         android:id="@+id/current_temperature"
@@ -151,10 +173,10 @@
                     android:padding="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="2"
-                    tools:listitem="@layout/layout_stats_item"/>
+                    tools:listitem="@layout/layout_stats_item" />
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar

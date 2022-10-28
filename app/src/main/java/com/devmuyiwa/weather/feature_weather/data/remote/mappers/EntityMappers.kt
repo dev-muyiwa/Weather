@@ -1,9 +1,9 @@
 package com.devmuyiwa.weather.feature_weather.data.remote.mappers
 
 import com.devmuyiwa.weather.feature_weather.data.local.entities.*
-import com.devmuyiwa.weather.feature_weather.data.remote.dto.*
+import com.devmuyiwa.weather.feature_weather.data.remote.forecastDto.*
 
-fun RemoteForecastDto.toEntityModel(): LocalWeatherWithForecast {
+fun RemoteWeatherForecastDto.toEntityModel(): LocalWeatherWithForecast {
     return LocalWeatherWithForecast(
         forecastId = 0,
         location = location!!.toEntityModel(),

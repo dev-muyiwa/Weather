@@ -5,9 +5,5 @@ data class UICurrentWeather(
 	val date: String,
 	val temperature: String,
 	val degreeType: String,
-	val feelsLikeTemp: String,
-	val precipitation: String,
-	val humidity: String,
-	val wind: String,
-	val pressure: String
+	val feelsLikeTemp: String
 )

@@ -7,8 +7,8 @@ import com.devmuyiwa.weather.feature_weather.util.*
 import java.time.*
 import kotlin.math.*
 
-fun HourlyForecast.toUIModel(): UIHourlyStats {
-	return UIHourlyStats(
+private fun HourlyForecast.toUIModel(): UIHourlyForecast {
+	return UIHourlyForecast(
 		time = timeEpoch.to12HourFormat(), icon = weatherIconUrl,
 		temperature = "${tempC.toStringValue()}°"
 	)
@@ -22,10 +22,29 @@ fun CurrentWeather.toUIModel(): UICurrentWeather {
 		temperature = tempInC.toStringValue(),
 		degreeType = "°C",
 		feelsLikeTemp = "Feels like ${feelsLikeC.toStringValue()}°",
-		precipitation = "$precipMm mm",
-		humidity = "$humidity%",
-		wind = "$windKph km/h",
-		pressure = "${pressureMb.toStringValue()} hPa"
-//		temperature = "$tempInC"
+	)
+}
+
+fun DailyForecast.toUIModel(): UIForecast{
+	return UIForecast(
+		astrology = astrology.toUIModel(),
+		day = day.toUIModel(),
+		hourlyForecast = hourlyForecast.map { it.toUIModel() }
+	)
+}
+
+private fun Day.toUIModel(): UIDay {
+	return UIDay(
+		precipitation = "$totalPrecipMm mm",
+		humidity = "$averageHumidity%",
+		wind = "$maxWindKph km/h",
+		visibility = "${avgVisKm.toStringValue()} km"
+	)
+}
+
+private fun Astrology.toUIModel(): UIAstro {
+	return UIAstro(
+		sunrise = sunrise,
+		sunset = sunset
 	)
 }

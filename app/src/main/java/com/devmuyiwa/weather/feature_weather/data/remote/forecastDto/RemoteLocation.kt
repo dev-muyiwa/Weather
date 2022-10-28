@@ -1,4 +1,4 @@
-package com.devmuyiwa.weather.feature_weather.data.remote.dto
+package com.devmuyiwa.weather.feature_weather.data.remote.forecastDto
 
 
 import com.squareup.moshi.Json
